@@ -13,6 +13,7 @@ public class Tweet
 	private boolean	favorited;
 	private boolean	retweeted;
 	private User	user;
+	private String	created_at;
 
 	public User getUser()
 	{
@@ -28,6 +29,12 @@ public class Tweet
 	{
 		return uid;
 	}
+	
+	public String getCreatedAt()
+	{
+		return created_at;
+	}
+
 
 	public boolean isFavorited()
 	{
@@ -46,6 +53,7 @@ public class Tweet
 		{
 			tweet.body = jsonObject.getString("text");
 			tweet.uid = jsonObject.getLong("id");
+			tweet.created_at = jsonObject.getString("created_at");
 			tweet.favorited = jsonObject.getBoolean("favorited");
 			tweet.retweeted = jsonObject.getBoolean("retweeted");
 			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
@@ -84,4 +92,5 @@ public class Tweet
 
 		return tweets;
 	}
+
 }
