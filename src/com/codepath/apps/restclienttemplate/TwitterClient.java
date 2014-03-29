@@ -1,14 +1,14 @@
 package com.codepath.apps.restclienttemplate;
 
 import org.scribe.builder.api.Api;
-import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
+import android.net.Uri;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 /*
  * 
@@ -22,12 +22,16 @@ import com.loopj.android.http.RequestParams;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
-public class TwitterClient extends OAuthBaseClient {
+public final class TwitterClient extends OAuthBaseClient {
     public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
     public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
     public static final String REST_CONSUMER_KEY = "5NeSgbM98NjNbrvVGwjgw";       // Change this
     public static final String REST_CONSUMER_SECRET = "62OL4ZCp0c0ayniWGOugJ15qlJJOhvwLocgfaGhZbNg"; // Change this
     public static final String REST_CALLBACK_URL = "oauth://lumpoftweets"; // Change this (here and in manifest)
+    
+    public static final String COUNT_PARAMETER = "?count=";
+    public static final String SINCE_PARAMETER = "&since_id=";
+    public static final String MAX_ID_PARAMETER = "&max_id=";
     
     public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
@@ -48,13 +52,58 @@ public class TwitterClient extends OAuthBaseClient {
     
     
     /**
-     * Get Twitter home timeline.
+     * Get first page of tweets in Twitter home timeline
      * 
-     * @param handler
+     * @param handler async callback handler that recieves result
      */
-    public void getHomeTimeline(AsyncHttpResponseHandler handler)
+    public void getHomeTimeline(final AsyncHttpResponseHandler handler, final int thePageSize)
     {
-    	String theApiUrl = getApiUrl("statuses/home_timeline.json");
-    	client.get(theApiUrl, null, handler);
+    	client.get(getHomeTimelineUrl(thePageSize), null, handler);
     }
+    
+    /**
+     * Get a page of tweets more recent tweets since a given tweet.
+     * 
+     * @param handler async callback handler that recieves result
+     * @param theTweetId tweet id that bounds the request
+     */
+    public void getHomeTimeline(
+    		final AsyncHttpResponseHandler handler, 
+    		final int thePageSize, 
+    		final TweetPage thePageOp, 
+    		final Tweet theTweet)
+    {
+		client.get(
+				getHomeTimelineUrl(thePageSize) + thePageOp.queryParameter(theTweet)
+				, null, handler);
+    }
+    
+    public enum TweetPage
+    {
+    	CURRENT_PAGE(null),
+    	PREVIOUS_PAGE(SINCE_PARAMETER),
+    	NEXT_PAGE(MAX_ID_PARAMETER);
+    	
+    	private final String _queryParameter;
+    	
+    	TweetPage(final String theQueryParameter)
+    	{
+    		_queryParameter = theQueryParameter;
+    	}
+    	
+    	String queryParameter(Tweet theTweet)
+    	{
+    		return ((null != _queryParameter) && (null != theTweet)) 
+    				? (_queryParameter + Uri.encode(Long.toString(theTweet.getId()))) 
+    				: "";
+    	}
+    }
+
+    private final String getHomeTimelineUrl(final int thePageSize)
+    {
+    	return getApiUrl("statuses/home_timeline.json")
+    		+ COUNT_PARAMETER
+    		+ Integer.toString(thePageSize);
+    }
+
 }
