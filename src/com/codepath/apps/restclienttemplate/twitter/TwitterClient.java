@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.twitter;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
@@ -9,6 +9,7 @@ import android.net.Uri;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 /*
  * 
@@ -104,6 +105,24 @@ public final class TwitterClient extends OAuthBaseClient {
     	return getApiUrl("statuses/home_timeline.json")
     		+ COUNT_PARAMETER
     		+ Integer.toString(thePageSize);
+    }
+    
+    /**
+     * Post an update (a tweet) for the authenticated user.
+     * 
+     * @param handler
+     * @param theTweetText the text of the tweet NOT Uri encoded.
+     */
+    public final void postUpdate(final AsyncHttpResponseHandler handler, final String theTweetText)
+    {
+    	final RequestParams theRequestParams = new RequestParams();
+    	theRequestParams.put("status", theTweetText);
+    	client.post(getUpdateUrl(), theRequestParams, handler);
+    }
+    
+    private final String getUpdateUrl()
+    {
+    	return getApiUrl("statuses/update.json");
     }
 
 }

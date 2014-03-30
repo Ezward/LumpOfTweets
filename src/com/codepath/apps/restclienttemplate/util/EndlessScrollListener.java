@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.util;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
