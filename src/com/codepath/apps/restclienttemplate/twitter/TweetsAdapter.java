@@ -45,7 +45,7 @@ public class TweetsAdapter extends ArrayAdapter<Tweet>
 		final User theUser = theTweet.getUser();
 		
 		final ImageView theImageView = (ImageView)theItemView.findViewById(R.id.imgProfile);
-		ImageLoader.getInstance().displayImage(theTweet.getUser().getProfileBackgroundImageUrl(), theImageView);
+		ImageLoader.getInstance().displayImage(theTweet.getUser().getProfileImageUrl(), theImageView);
 		
 		final TextView theNameView = (TextView)theItemView.findViewById(R.id.txtName);
 		final String theFormattedName = formatName(theUser);

@@ -8,6 +8,7 @@ public class User
 	private String	name;
 	private long	uid;
 	private String	screenName;
+	private String	profileImageUrl;
 	private String	profileBgImageUrl;
 	private int		numTweets;
 	private int		followersCount;
@@ -26,6 +27,11 @@ public class User
 	public String getScreenName()
 	{
 		return screenName;
+	}
+
+	public String getProfileImageUrl()
+	{
+		return profileImageUrl;
 	}
 
 	public String getProfileBackgroundImageUrl()
@@ -56,6 +62,7 @@ public class User
 			u.name = json.getString("name");
 			u.uid = json.getLong("id");
 			u.screenName = json.getString("screen_name");
+			u.profileImageUrl = json.getString("profile_image_url");
 			u.profileBgImageUrl = json.getString("profile_background_image_url");
 			u.numTweets = json.getInt("statuses_count");
 			u.followersCount = json.getInt("followers_count");
