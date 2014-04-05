@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.util;
+package com.lumpofcode.lumpoftweets.util;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -37,11 +37,7 @@ public abstract class EndlessScrollListener implements OnScrollListener
 	// We are given a few useful parameters to help us work out if we need to load some more data,
 	// but first we check if we are waiting for the previous load to finish.
 	@Override
-	public void onScroll(
-			AbsListView view, 
-			int firstVisibleItem, 
-			int visibleItemCount, 
-			int totalItemCount)
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
 	{
 		// If the total item count is zero and the previous isn't, assume the
 		// list is invalidated and should be reset back to initial state

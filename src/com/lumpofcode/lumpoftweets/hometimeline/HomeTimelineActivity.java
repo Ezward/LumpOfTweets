@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.hometimeline;
+package com.lumpofcode.lumpoftweets.hometimeline;
 
 import java.util.ArrayList;
 
@@ -6,27 +6,28 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.codepath.apps.restclienttemplate.tweetdetail.TweetDetailDialog;
-import com.codepath.apps.restclienttemplate.tweetdetail.TweetDetailDialog.TweetDetailDialogListener;
-import com.codepath.apps.restclienttemplate.twitter.TweetsAdapter;
-import com.codepath.apps.restclienttemplate.twitter.TwitterClient;
-import com.codepath.apps.restclienttemplate.twitter.TwitterClientApp;
-import com.codepath.apps.restclienttemplate.util.EndlessScrollListener;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class HomeTimelineActivity extends FragmentActivity implements TweetDetailDialogListener
+import com.lumpofcode.lumpoftweets.R;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.lumpofcode.lumpoftweets.models.Tweet;
+import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog;
+import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog.TweetDetailDialogListener;
+import com.lumpofcode.lumpoftweets.twitter.TweetsAdapter;
+import com.lumpofcode.lumpoftweets.twitter.TwitterClient;
+import com.lumpofcode.lumpoftweets.twitter.TwitterClientApp;
+import com.lumpofcode.lumpoftweets.util.EndlessScrollListener;
+
+public class HomeTimelineActivity extends SherlockFragmentActivity implements TweetDetailDialogListener
 {
 	private static final int	TWEET_PAGE_SIZE	= 25;
 
@@ -69,7 +70,7 @@ public class HomeTimelineActivity extends FragmentActivity implements TweetDetai
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home_timeline, menu);
+		getSupportMenuInflater().inflate(R.menu.home_timeline, menu);
 		return true;
 	}
 

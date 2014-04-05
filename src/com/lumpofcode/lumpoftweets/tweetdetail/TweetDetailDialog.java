@@ -1,6 +1,6 @@
-package com.codepath.apps.restclienttemplate.tweetdetail;
+package com.lumpofcode.lumpoftweets.tweetdetail;
 
-import com.codepath.apps.restclienttemplate.R;
+import com.lumpofcode.lumpoftweets.R;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;

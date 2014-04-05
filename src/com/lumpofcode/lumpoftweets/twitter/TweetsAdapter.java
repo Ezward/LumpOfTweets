@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.twitter;
+package com.lumpofcode.lumpoftweets.twitter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,9 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.codepath.apps.restclienttemplate.models.User;
+import com.lumpofcode.lumpoftweets.R;
+import com.lumpofcode.lumpoftweets.models.Tweet;
+import com.lumpofcode.lumpoftweets.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class TweetsAdapter extends ArrayAdapter<Tweet>

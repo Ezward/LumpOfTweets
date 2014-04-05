@@ -1,14 +1,14 @@
-package com.codepath.apps.restclienttemplate.login;
+package com.lumpofcode.lumpoftweets.login;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.hometimeline.HomeTimelineActivity;
-import com.codepath.apps.restclienttemplate.twitter.TwitterClient;
+import com.lumpofcode.lumpoftweets.R;
 import com.codepath.oauth.OAuthLoginActivity;
+import com.lumpofcode.lumpoftweets.hometimeline.HomeTimelineActivity;
+import com.lumpofcode.lumpoftweets.twitter.TwitterClient;
 
 public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 

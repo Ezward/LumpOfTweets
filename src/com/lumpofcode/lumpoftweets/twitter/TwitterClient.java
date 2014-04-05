@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.twitter;
+package com.lumpofcode.lumpoftweets.twitter;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
@@ -6,10 +6,10 @@ import org.scribe.builder.api.TwitterApi;
 import android.content.Context;
 import android.net.Uri;
 
-import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.lumpofcode.lumpoftweets.models.Tweet;
 
 /*
  * 

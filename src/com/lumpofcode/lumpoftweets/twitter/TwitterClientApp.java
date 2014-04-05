@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.twitter;
+package com.lumpofcode.lumpoftweets.twitter;
 
 import android.content.Context;
 

@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Twitter" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.Twitter" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarItemBackground">@drawable/selectable_background_twitter</item>
         <item name="popupMenuStyle">@style/PopupMenu.Twitter</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Twitter</item>
@@ -33,46 +33,46 @@
         
     </style>
 
-    <style name="ActionBar.Solid.Twitter" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+    <style name="ActionBar.Solid.Twitter" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
         <item name="background">@drawable/ab_solid_twitter</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_twitter</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_twitter</item>
         <item name="progressBarStyle">@style/ProgressBar.Twitter</item>
     </style>
 
-    <style name="ActionBar.Transparent.Twitter" parent="@style/Widget.AppCompat.Light.ActionBar">
+    <style name="ActionBar.Transparent.Twitter" parent="@style/Widget.Sherlock.Light.ActionBar">
         <item name="background">@drawable/ab_transparent_twitter</item>
         <item name="progressBarStyle">@style/ProgressBar.Twitter</item>
     </style>
 	
-    <style name="PopupMenu.Twitter" parent="@style/Widget.AppCompat.Light.PopupMenu">	
+    <style name="PopupMenu.Twitter" parent="@style/Widget.Sherlock.Light.ListPopupWindow">	
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_twitter</item>	
     </style>
 	
-    <style name="DropDownListView.Twitter" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+    <style name="DropDownListView.Twitter" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_twitter</item>
     </style>
 
-    <style name="ActionBarTabStyle.Twitter" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+    <style name="ActionBarTabStyle.Twitter" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_twitter</item>
     </style>
 	
-    <style name="DropDownNav.Twitter" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+    <style name="DropDownNav.Twitter" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_twitter</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_twitter</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_twitter</item>
     </style>
     
-    <style name="ProgressBar.Twitter" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+    <style name="ProgressBar.Twitter" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_twitter</item>
     </style>
     
-    <style name="ActionButton.CloseMode.Twitter" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+    <style name="ActionButton.CloseMode.Twitter" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_twitter</item>
     </style>
     
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Twitter.Widget" parent="@style/Theme.AppCompat">
+    <style name="Theme.Twitter.Widget" parent="@style/Theme.Sherlock">
         <item name="popupMenuStyle">@style/PopupMenu.Twitter</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Twitter</item>
     </style>
