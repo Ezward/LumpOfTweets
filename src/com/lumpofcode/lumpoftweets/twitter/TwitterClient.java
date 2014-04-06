@@ -79,6 +79,23 @@ public final class TwitterClient extends OAuthBaseClient {
 				, null, handler);
     }
     
+    /**
+     * Get a page of tweets more recent tweets since a given tweet.
+     * 
+     * @param handler async callback handler that recieves result
+     * @param theTweetId tweet id that bounds the request
+     */
+    public void getMentionsIimeline(
+    		final AsyncHttpResponseHandler handler, 
+    		final int thePageSize, 
+    		final TweetPage thePageOp, 
+    		final Tweet theTweet)
+    {
+		client.get(
+				getMentionsTimelineUrl(thePageSize) + thePageOp.queryParameter(theTweet)
+				, null, handler);
+    }
+    
     public enum TweetPage
     {
     	CURRENT_PAGE(null),
@@ -103,6 +120,13 @@ public final class TwitterClient extends OAuthBaseClient {
     private final String getHomeTimelineUrl(final int thePageSize)
     {
     	return getApiUrl("statuses/home_timeline.json")
+    		+ COUNT_PARAMETER
+    		+ Integer.toString(thePageSize);
+    }
+    
+    private final String getMentionsTimelineUrl(final int thePageSize)
+    {
+    	return getApiUrl("statuses/mentions_timeline.json")
     		+ COUNT_PARAMETER
     		+ Integer.toString(thePageSize);
     }

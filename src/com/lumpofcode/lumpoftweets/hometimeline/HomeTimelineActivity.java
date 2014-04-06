@@ -1,69 +1,38 @@
 package com.lumpofcode.lumpoftweets.hometimeline;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-import com.lumpofcode.lumpoftweets.R;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.lumpofcode.lumpoftweets.R;
 import com.lumpofcode.lumpoftweets.models.Tweet;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog.TweetDetailDialogListener;
-import com.lumpofcode.lumpoftweets.twitter.TweetsAdapter;
-import com.lumpofcode.lumpoftweets.twitter.TwitterClient;
+import com.lumpofcode.lumpoftweets.tweetlist.HomeTimelineFragment;
+import com.lumpofcode.lumpoftweets.tweetlist.TweetListFragment;
 import com.lumpofcode.lumpoftweets.twitter.TwitterClientApp;
-import com.lumpofcode.lumpoftweets.util.EndlessScrollListener;
 
 public class HomeTimelineActivity extends SherlockFragmentActivity implements TweetDetailDialogListener
 {
-	private static final int	TWEET_PAGE_SIZE	= 25;
-
-	private TweetsAdapter		tweets;
+	TweetListFragment tweetListFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		final View theView = LayoutInflater.from(this).inflate(R.layout.activity_home_timeline, null);
+		super.onCreate(savedInstanceState);
+
+		final View theView = getLayoutInflater().inflate(R.layout.activity_home_timeline, null);
 		setContentView(theView);
 
-		//
-		// setup the display adapter with empty array
-		//
-		tweets = new TweetsAdapter(this, R.layout.tweet_item, new ArrayList<Tweet>());
-		final ListView listTweets = (ListView) theView.findViewById(R.id.listView1);
-		listTweets.setAdapter(tweets);
-
-		listTweets.setOnScrollListener(new EndlessScrollListener(TWEET_PAGE_SIZE)
-		{
-			@Override
-			public void onLoadMore(int page, int totalItemsCount)
-			{
-				// Triggered only when new data needs to be appended to the list
-				// Add whatever code is needed to append new items to your AdapterView
-				loadTweets(TwitterClient.TweetPage.NEXT_PAGE,
-						(tweets.getCount() > 0) ? tweets.getItem(tweets.getCount() - 1) : null);
-			}
-		});
-
-		//
-		// fire off a request for the home timeline tweets
-		//
-		loadTweets(TwitterClient.TweetPage.CURRENT_PAGE, null);
-
-		super.onCreate(savedInstanceState);
+		tweetListFragment = (TweetListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentTweets);
 	}
 
 	@Override
@@ -74,6 +43,11 @@ public class HomeTimelineActivity extends SherlockFragmentActivity implements Tw
 		return true;
 	}
 
+	/**
+	 * User selected to tweet, so open the dialog to enter it.
+	 * 
+	 * @param item
+	 */
 	public void onTweetAction(MenuItem item)
 	{
 		Toast.makeText(this, "What's Happening?", Toast.LENGTH_SHORT).show();
@@ -82,32 +56,28 @@ public class HomeTimelineActivity extends SherlockFragmentActivity implements Tw
 		theDialog.show(fm, "fragment_new_tweet");
 	}
 
-	private void loadTweets(final TwitterClient.TweetPage thePage, final Tweet theStartingTweet)
+
+	/* (non-Javadoc)
+	 * @see com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog.TweetDetailDialogListener#onFinishTweetDetailDialog(java.lang.String)
+	 */
+	@Override
+	public void onFinishTweetDetailDialog(String inputText)
 	{
+		// 
+		// if inputText is not null, then tweet it
 		//
-		// load a page of tweets
-		//
-		TwitterClientApp.getRestClient().getHomeTimeline(new JsonHttpResponseHandler()
+		if((null != inputText) && !inputText.isEmpty())
 		{
-
-			@Override
-			public void onFailure(Throwable theThrowable, JSONArray theJSONArray)
-			{
-				Log.d("DEBUG", theThrowable.toString());
-				super.onFailure(theThrowable, theJSONArray);
-			}
-
-			@Override
-			public void onSuccess(JSONArray theJSONArray)
-			{
-				final ArrayList<Tweet> theTweets = Tweet.fromJson(theJSONArray);
-				tweets.addAll(theTweets);
-			}
-
-		}, TWEET_PAGE_SIZE, thePage, theStartingTweet);
-
+			Toast.makeText(this, inputText, Toast.LENGTH_SHORT).show();
+			postTweet(inputText);
+		}
 	}
-	
+
+	/**
+	 * Given the text, call the tweet service to tweet it.
+	 * 
+	 * @param theTweetText
+	 */
 	private void postTweet(final String theTweetText)
 	{
 		//
@@ -129,7 +99,7 @@ public class HomeTimelineActivity extends SherlockFragmentActivity implements Tw
 				final Tweet theTweet = Tweet.fromJson(theJSONObject);
 				if(null != theTweet)
 				{
-					tweets.insert(theTweet, 0);
+					tweetListFragment.getTweetsAdapter().insert(theTweet, 0);
 				}
 			}
 
@@ -137,15 +107,5 @@ public class HomeTimelineActivity extends SherlockFragmentActivity implements Tw
 
 	}
 
-
-	@Override
-	public void onFinishTweetDetailDialog(String inputText)
-	{
-		if((null != inputText) && !inputText.isEmpty())
-		{
-			Toast.makeText(this, inputText, Toast.LENGTH_SHORT).show();
-			postTweet(inputText);
-		}
-	}
 
 }
