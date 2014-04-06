@@ -26,6 +26,13 @@ public abstract class TweetListFragment extends SherlockFragment
 
 	private TweetsAdapter		tweetsAdapter;
 
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -62,7 +69,6 @@ public abstract class TweetListFragment extends SherlockFragment
 		// fire off a request for the home timeline tweetsAdapter
 		//
 		loadTweets(TwitterClient.TweetPage.CURRENT_PAGE, null);
-
 	}
 	
 	public final TweetsAdapter getTweetsAdapter()

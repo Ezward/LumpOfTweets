@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lumpofcode.lumpoftweets.hometimeline.HomeTimelineActivity"
+            android:name="com.lumpofcode.lumpoftweets.tweetsactivity.TweetsActivity"
             android:label="@string/title_activity_home_timeline" >
         </activity>
     </application>

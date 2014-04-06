@@ -1,13 +1,17 @@
-package com.lumpofcode.lumpoftweets.hometimeline;
+package com.lumpofcode.lumpoftweets.tweetsactivity;
 
 import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -17,11 +21,17 @@ import com.lumpofcode.lumpoftweets.models.Tweet;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog.TweetDetailDialogListener;
 import com.lumpofcode.lumpoftweets.tweetlist.HomeTimelineFragment;
+import com.lumpofcode.lumpoftweets.tweetlist.MentionsTimelineFragment;
 import com.lumpofcode.lumpoftweets.tweetlist.TweetListFragment;
 import com.lumpofcode.lumpoftweets.twitter.TwitterClientApp;
 
-public class HomeTimelineActivity extends SherlockFragmentActivity implements TweetDetailDialogListener
+public class TweetsActivity 
+		extends SherlockFragmentActivity 
+		implements TweetDetailDialogListener, TabListener
 {
+	private static final Integer HOME_TAB = R.string.action_home;
+	private static final Integer MENTIONS_TAB = R.string.action_mentions;
+	
 	TweetListFragment tweetListFragment;
 
 	@Override
@@ -31,8 +41,36 @@ public class HomeTimelineActivity extends SherlockFragmentActivity implements Tw
 
 		final View theView = getLayoutInflater().inflate(R.layout.activity_home_timeline, null);
 		setContentView(theView);
+		
+		setupNavigationTabs();
 
-		tweetListFragment = (TweetListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentTweets);
+		//tweetListFragment = (TweetListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentTweets);
+	}
+
+	private void setupNavigationTabs()
+	{
+		final ActionBar theActionBar = this.getSupportActionBar();
+		
+		// show tabs and title
+		theActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		theActionBar.setDisplayShowTitleEnabled(true);	// show title
+		
+		// create the home tab
+		final Tab theHomeTab = theActionBar.newTab()
+				.setTag(HOME_TAB)	// just to switch on
+				.setIcon(R.drawable.ic_action_home)
+				.setText(R.string.action_home)
+				.setTabListener(this);
+		theActionBar.addTab(theHomeTab);
+		
+		final Tab theMentionsTab = theActionBar.newTab()
+				.setTag(MENTIONS_TAB)	// just to switch on
+				.setIcon(R.drawable.ic_action_mentions)
+				.setText(R.string.action_mentions)
+				.setTabListener(this);
+		theActionBar.addTab(theMentionsTab);
+		
+		theActionBar.selectTab(theHomeTab);
 	}
 
 	@Override
@@ -105,6 +143,35 @@ public class HomeTimelineActivity extends SherlockFragmentActivity implements Tw
 
 		}, theTweetText);
 
+	}
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft)
+	{
+		final FragmentManager theFragmentManager = getSupportFragmentManager();
+		final FragmentTransaction theTransaction = theFragmentManager.beginTransaction();
+		if(tab.getTag().equals(HOME_TAB))
+		{
+			theTransaction.replace(R.id.tweetsFrame, new HomeTimelineFragment());
+		}
+		else	// its the mentions tab
+		{
+			theTransaction.replace(R.id.tweetsFrame, new MentionsTimelineFragment());
+		}
+		theTransaction.commit();
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft)
+	{
+		// we don't unselect tabs
+	}
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft)
+	{
+		// we don't reselect tabs
+		
 	}
 
 

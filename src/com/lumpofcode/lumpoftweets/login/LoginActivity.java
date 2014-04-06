@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.lumpofcode.lumpoftweets.R;
 import com.codepath.oauth.OAuthLoginActivity;
-import com.lumpofcode.lumpoftweets.hometimeline.HomeTimelineActivity;
+import com.lumpofcode.lumpoftweets.tweetsactivity.TweetsActivity;
 import com.lumpofcode.lumpoftweets.twitter.TwitterClient;
 
 public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
@@ -29,7 +29,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 	// i.e Display application "homepage"
     @Override
     public void onLoginSuccess() {
-    	 Intent i = new Intent(this, HomeTimelineActivity.class);
+    	 Intent i = new Intent(this, TweetsActivity.class);
     	 startActivity(i);
     }
     

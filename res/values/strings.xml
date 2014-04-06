@@ -9,5 +9,7 @@
     <string name="new_tweet_title">What\'s Happening?</string>
     <string name="action_tweet">What\'s Happening?</string>
     <string name="ok_action_tweet">Tweet!</string>
+    <string name="action_home">Home</string>
+    <string name="action_mentions">Mentions</string>
     
 </resources>
