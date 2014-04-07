@@ -3,11 +3,12 @@ package com.lumpofcode.lumpoftweets.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User
+public final class User
 {
 	private String	name;
 	private long	uid;
 	private String	screenName;
+	private String	tagline;
 	private String	profileImageUrl;
 	private String	profileBgImageUrl;
 	private int		numTweets;
@@ -53,6 +54,11 @@ public class User
 	{
 		return friendsCount;
 	}
+	
+	public String getTagline()
+	{
+		return tagline;
+	}
 
 	public static User fromJson(JSONObject json)
 	{
@@ -62,6 +68,7 @@ public class User
 			u.name = json.getString("name");
 			u.uid = json.getLong("id");
 			u.screenName = json.getString("screen_name");
+			u.tagline = json.getString("description");
 			u.profileImageUrl = json.getString("profile_image_url");
 			u.profileBgImageUrl = json.getString("profile_background_image_url");
 			u.numTweets = json.getInt("statuses_count");

@@ -2,6 +2,7 @@ package com.lumpofcode.lumpoftweets.tweetsactivity;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,11 +19,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.lumpofcode.lumpoftweets.R;
 import com.lumpofcode.lumpoftweets.models.Tweet;
+import com.lumpofcode.lumpoftweets.profileactivity.ProfileActivity;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog.TweetDetailDialogListener;
 import com.lumpofcode.lumpoftweets.tweetlist.HomeTimelineFragment;
 import com.lumpofcode.lumpoftweets.tweetlist.MentionsTimelineFragment;
-import com.lumpofcode.lumpoftweets.tweetlist.TweetListFragment;
 import com.lumpofcode.lumpoftweets.twitter.TwitterClientApp;
 
 public class TweetsActivity 
@@ -32,19 +33,17 @@ public class TweetsActivity
 	private static final Integer HOME_TAB = R.string.action_home;
 	private static final Integer MENTIONS_TAB = R.string.action_mentions;
 	
-	TweetListFragment tweetListFragment;
-
+	private ActionBar _actionBar;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
-		final View theView = getLayoutInflater().inflate(R.layout.activity_home_timeline, null);
+		final View theView = getLayoutInflater().inflate(R.layout.activity_tweets, null);
 		setContentView(theView);
 		
 		setupNavigationTabs();
-
-		//tweetListFragment = (TweetListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentTweets);
 	}
 
 	private void setupNavigationTabs()
@@ -70,14 +69,17 @@ public class TweetsActivity
 				.setTabListener(this);
 		theActionBar.addTab(theMentionsTab);
 		
-		theActionBar.selectTab(theHomeTab);
+		theActionBar.selectTab(theMentionsTab);
+		
+		_actionBar = theActionBar;
+		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.home_timeline, menu);
+		getSupportMenuInflater().inflate(R.menu.activity_tweets, menu);
 		return true;
 	}
 
@@ -92,6 +94,12 @@ public class TweetsActivity
 		final FragmentManager fm = getSupportFragmentManager();
 		final TweetDetailDialog theDialog = TweetDetailDialog.newInstance(true);
 		theDialog.show(fm, "fragment_new_tweet");
+	}
+	
+	public void onProfileAction(MenuItem item)
+	{
+		Intent i = new Intent(this, ProfileActivity.class);
+		startActivity(i);
 	}
 
 
@@ -133,11 +141,18 @@ public class TweetsActivity
 			@Override
 			public void onSuccess(JSONObject theJSONObject)
 			{
-				// insert the tweet into the array, this will update the tweet list
-				final Tweet theTweet = Tweet.fromJson(theJSONObject);
-				if(null != theTweet)
+				// only do this if the home timeline tab is showing
+				if(HOME_TAB.equals(_actionBar.getSelectedTab().getTag()))
 				{
-					tweetListFragment.getTweetsAdapter().insert(theTweet, 0);
+					// insert the tweet into the array, this will update the tweet list
+					final Tweet theTweet = Tweet.fromJson(theJSONObject);
+					if(null != theTweet)
+					{
+						final FragmentManager theFragmentManager = getSupportFragmentManager();
+						final HomeTimelineFragment homeTimelineFragment = 
+								(HomeTimelineFragment)theFragmentManager.findFragmentById(R.id.tweetsFrame);
+						homeTimelineFragment.getTweetsAdapter().insert(theTweet, 0);
+					}
 				}
 			}
 

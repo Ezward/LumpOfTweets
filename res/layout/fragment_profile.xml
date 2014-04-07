@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/colorTwitterGray"
+    >
+    
+    <!-- 
+    	centerProfile is empty text view used to anchor 
+    	others views in the center of layout.  It's height
+    	MUST be half of the image height + image margins
+    -->
+    <TextView
+        android:id="@+id/centerProfile"
+        android:layout_width="5dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:text=""
+        />
+    
+    <ImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_toLeftOf="@+id/centerProfile"
+        android:src="@drawable/ab_transparent_twitter" 
+        android:contentDescription="@string/contentDescriptionProfileImage"
+        />
+
+    <TextView
+        android:id="@+id/textProfileScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/centerProfile"
+        android:layout_toRightOf="@+id/centerProfile"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textProfileTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textProfileScreenName"
+        android:layout_alignLeft="@+id/textProfileScreenName"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorTwitterWhite"
+        android:layout_below="@+id/imageProfile" >
+
+        <TextView
+            android:id="@+id/textTweetCount"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/textFollowingCount"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/textFollowersCount"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

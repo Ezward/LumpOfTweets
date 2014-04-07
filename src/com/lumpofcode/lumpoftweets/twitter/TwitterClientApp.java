@@ -5,6 +5,8 @@ import android.content.Context;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -15,13 +17,17 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  *     // use client to send requests to API
  *     
  */
-public class TwitterClientApp extends com.activeandroid.app.Application {
+public final class TwitterClientApp extends com.activeandroid.app.Application {
 	private static Context context;
+	private static Bus eventBus;
 	
     @Override
     public void onCreate() {
         super.onCreate();
         TwitterClientApp.context = this;
+        
+        // event bus singleton
+        eventBus = new Bus(ThreadEnforcer.MAIN);
         
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
@@ -32,7 +38,12 @@ public class TwitterClientApp extends com.activeandroid.app.Application {
         ImageLoader.getInstance().init(config);
     }
     
-    public static TwitterClient getRestClient() {
+    public static final Bus getEventBus()
+    {
+    	return eventBus;
+    }
+    
+    public static final TwitterClient getRestClient() {
     	return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterClientApp.context);
     }
 }

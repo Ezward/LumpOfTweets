@@ -31,6 +31,15 @@ public abstract class TweetListFragment extends SherlockFragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+
+		//
+		// fire off a request for the first page of tweets
+		//
+		if(null == savedInstanceState)
+		{
+			loadTweets(TwitterClient.TweetPage.CURRENT_PAGE, null);
+		}
 	}
 
 	@Override
@@ -64,11 +73,6 @@ public abstract class TweetListFragment extends SherlockFragment
 						(theTweetsAdapter.getCount() > 0) ? theTweetsAdapter.getItem(theTweetsAdapter.getCount() - 1) : null);
 			}
 		});
-
-		//
-		// fire off a request for the home timeline tweetsAdapter
-		//
-		loadTweets(TwitterClient.TweetPage.CURRENT_PAGE, null);
 	}
 	
 	public final TweetsAdapter getTweetsAdapter()
@@ -99,6 +103,16 @@ public abstract class TweetListFragment extends SherlockFragment
 			final ArrayList<Tweet> theTweets = Tweet.fromJson(theJSONArray);
 			getTweetsAdapter().addAll(theTweets);
 		}
+
+		@Override
+		protected void handleFailureMessage(Throwable theThrowable, String theMessage)
+		{
+			Log.d("DEBUG", theThrowable.toString());
+			Log.d("DEBUG", theMessage);
+			super.handleFailureMessage(theThrowable, theMessage);
+		}
+		
+		
 
 	}
 

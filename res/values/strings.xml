@@ -8,8 +8,14 @@
     <string name="title_activity_home_timeline">Home</string>
     <string name="new_tweet_title">What\'s Happening?</string>
     <string name="action_tweet">What\'s Happening?</string>
+    <string name="action_profile">Profile</string>
     <string name="ok_action_tweet">Tweet!</string>
     <string name="action_home">Home</string>
     <string name="action_mentions">Mentions</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="contentDescriptionProfileImage">Profile Image</string>
+    <string name="template_profile_tweet_count">{TWEET_COUNT} tweets</string>
+    <string name="template_profile_followers_count">{FOLLOWERS_COUNT} followers</string>
+    <string name="template_profile_following_count">{FOLLOWING_COUNT} following</string>
     
 </resources>

@@ -51,17 +51,16 @@ public final class TwitterClient extends OAuthBaseClient {
      *    i.e client.post(apiUrl, params, handler);
      */
     
-    
     /**
-     * Get first page of tweets in Twitter home timeline
-     * 
-     * @param handler async callback handler that recieves result
+     * Get the user's profile data via the twitter verify credentials end point
+     * @param handler the AsyncHttpResponseHandler called when the service returns with data
      */
-    public void getHomeTimeline(final AsyncHttpResponseHandler handler, final int thePageSize)
+    public void getProfile(final AsyncHttpResponseHandler handler)
     {
-    	client.get(getHomeTimelineUrl(thePageSize), null, handler);
+		client.get(getVerifyCredentialsUrl(), null, handler);
     }
     
+
     /**
      * Get a page of tweets more recent tweets since a given tweet.
      * 
@@ -96,23 +95,42 @@ public final class TwitterClient extends OAuthBaseClient {
 				, null, handler);
     }
     
+    /**
+     * Get a page of tweets more recent tweets since a given tweet.
+     * 
+     * @param handler async callback handler that recieves result
+     * @param theTweetId tweet id that bounds the request
+     */
+    public void getUserTimeline(
+    		final AsyncHttpResponseHandler handler, 
+    		final int thePageSize, 
+    		final TweetPage thePageOp, 
+    		final Tweet theTweet)
+    {
+		client.get(
+				getUserTimelineUrl(thePageSize) + thePageOp.queryParameter(theTweet)
+				, null, handler);
+    }
+    
     public enum TweetPage
     {
-    	CURRENT_PAGE(null),
-    	PREVIOUS_PAGE(SINCE_PARAMETER),
-    	NEXT_PAGE(MAX_ID_PARAMETER);
+    	CURRENT_PAGE(null, 0),
+    	PREVIOUS_PAGE(SINCE_PARAMETER, 0),
+    	NEXT_PAGE(MAX_ID_PARAMETER, -1);
     	
     	private final String _queryParameter;
+    	private final long _idAdjustment;
     	
-    	TweetPage(final String theQueryParameter)
+    	TweetPage(final String theQueryParameter, final long theIdAdjustment)
     	{
     		_queryParameter = theQueryParameter;
+    		_idAdjustment = theIdAdjustment;
     	}
     	
     	String queryParameter(Tweet theTweet)
     	{
     		return ((null != _queryParameter) && (null != theTweet)) 
-    				? (_queryParameter + Uri.encode(Long.toString(theTweet.getId()))) 
+    				? (_queryParameter + Uri.encode(Long.toString(theTweet.getId() + _idAdjustment))) 
     				: "";
     	}
     }
@@ -129,6 +147,18 @@ public final class TwitterClient extends OAuthBaseClient {
     	return getApiUrl("statuses/mentions_timeline.json")
     		+ COUNT_PARAMETER
     		+ Integer.toString(thePageSize);
+    }
+    
+    private final String getUserTimelineUrl(final int thePageSize)
+    {
+    	return getApiUrl("statuses/user_timeline.json")
+    		+ COUNT_PARAMETER
+    		+ Integer.toString(thePageSize);
+    }
+    
+    private final String getVerifyCredentialsUrl()
+    {
+    	return getApiUrl("account/verify_credentials.json");
     }
     
     /**
