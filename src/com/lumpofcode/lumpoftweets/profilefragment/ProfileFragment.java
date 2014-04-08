@@ -28,23 +28,6 @@ public abstract class ProfileFragment extends SherlockFragment
 	private TextView textFollowersCount;
 	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		
-		if(null == savedInstanceState)
-		{
-			loadProfile();
-		}
-	}
-
-	@Override
 	public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		final View theView = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -57,6 +40,8 @@ public abstract class ProfileFragment extends SherlockFragment
 		textFollowingCount = (TextView)theView.findViewById(R.id.textFollowingCount);
 		textFollowersCount = (TextView)theView.findViewById(R.id.textFollowersCount);
 		
+		loadProfile();
+
 		return theView;
 	}
 	

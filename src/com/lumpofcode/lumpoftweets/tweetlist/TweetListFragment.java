@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,40 +24,17 @@ public abstract class TweetListFragment extends SherlockFragment
 	protected static final int	TWEET_PAGE_SIZE	= 25;
 
 	private TweetsAdapter		tweetsAdapter;
-
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		
-
-		//
-		// fire off a request for the first page of tweets
-		//
-		if(null == savedInstanceState)
-		{
-			loadTweets(TwitterClient.TweetPage.CURRENT_PAGE, null);
-		}
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_tweet_list, container, false);
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
+		final View theView = inflater.inflate(R.layout.fragment_tweet_list, container, false);
 		
 		//
 		// setup the display adapter with empty array
 		//
-		final Activity theActivity = getActivity();
-		tweetsAdapter = new TweetsAdapter(theActivity, R.layout.tweet_item, new ArrayList<Tweet>());
-		final ListView listTweets = (ListView) theActivity.findViewById(R.id.listTweets);
+		tweetsAdapter = new TweetsAdapter(getActivity(), R.layout.tweet_item, new ArrayList<Tweet>());
+		final ListView listTweets = (ListView) theView.findViewById(R.id.listTweets);
 		listTweets.setAdapter(tweetsAdapter);
 		
 		listTweets.setOnScrollListener(new EndlessScrollListener(TWEET_PAGE_SIZE)
@@ -73,6 +49,11 @@ public abstract class TweetListFragment extends SherlockFragment
 						(theTweetsAdapter.getCount() > 0) ? theTweetsAdapter.getItem(theTweetsAdapter.getCount() - 1) : null);
 			}
 		});
+
+		// load the tweets
+		loadTweets(TwitterClient.TweetPage.CURRENT_PAGE, null);
+		
+		return theView;
 	}
 	
 	/**
