@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -19,10 +21,13 @@ import android.widget.TextView;
 import com.lumpofcode.lumpoftweets.R;
 import com.lumpofcode.lumpoftweets.models.Tweet;
 import com.lumpofcode.lumpoftweets.models.User;
+import com.lumpofcode.lumpoftweets.profileactivity.UserProfileActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class TweetsAdapter extends ArrayAdapter<Tweet>
 {
+	public static final String SCREEN_NAME_ARG = "screen_name";
+	
 	final int itemLayoutId;
 	
 	public TweetsAdapter(final Context context, final int theItemLayoutId, final ArrayList<Tweet> theTweetList)
@@ -44,7 +49,28 @@ public class TweetsAdapter extends ArrayAdapter<Tweet>
 		final Tweet theTweet = getItem(position);
 		final User theUser = theTweet.getUser();
 		
+		//
+		// make the profile image clickable, so it brings up the user's profile
+		//
 		final ImageView theImageView = (ImageView)theItemView.findViewById(R.id.imgProfile);
+		theImageView.setTag(theUser.getScreenName());	// stash screen name for onClick handler to use
+		theImageView.setOnClickListener(new OnClickListener()
+		{
+			//
+			// show user's profile when we click on their profile picture
+			//
+			@Override
+			public void onClick(final View theView)
+			{
+				final Context theContext = theView.getContext();
+				
+				// pass the screen  name to the activity
+				final Intent i = new Intent(theContext, UserProfileActivity.class);
+				i.putExtra(SCREEN_NAME_ARG, theView.getTag().toString());
+				theContext.startActivity(i);
+			}
+		});
+		
 		ImageLoader.getInstance().displayImage(theTweet.getUser().getProfileImageUrl(), theImageView);
 		
 		final TextView theNameView = (TextView)theItemView.findViewById(R.id.txtName);
@@ -58,6 +84,7 @@ public class TweetsAdapter extends ArrayAdapter<Tweet>
 		final TextView theBodyView = (TextView)theItemView.findViewById(R.id.txtBody);
 		theBodyView.setText(Html.fromHtml(theTweet.getBody()));
 		
+
 		return theItemView;
 	}
 	

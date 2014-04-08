@@ -75,6 +75,9 @@ public abstract class TweetListFragment extends SherlockFragment
 		});
 	}
 	
+	/**
+	 * @return the array adapter for this tweets list.
+	 */
 	public final TweetsAdapter getTweetsAdapter()
 	{
 		return tweetsAdapter;
@@ -111,9 +114,6 @@ public abstract class TweetListFragment extends SherlockFragment
 			Log.d("DEBUG", theMessage);
 			super.handleFailureMessage(theThrowable, theMessage);
 		}
-		
-		
-
 	}
 
 }

@@ -1,18 +1,23 @@
 package com.lumpofcode.lumpoftweets.profilefragment;
 
+import org.json.JSONObject;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.lumpofcode.lumpoftweets.R;
 import com.lumpofcode.lumpoftweets.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ProfileFragment extends SherlockFragment
+public abstract class ProfileFragment extends SherlockFragment
 {
 
 	private ImageView imageProfile;
@@ -32,10 +37,15 @@ public class ProfileFragment extends SherlockFragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		if(null == savedInstanceState)
+		{
+			loadProfile();
+		}
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		final View theView = inflater.inflate(R.layout.fragment_profile, container, false);
 		
@@ -50,7 +60,7 @@ public class ProfileFragment extends SherlockFragment
 		return theView;
 	}
 	
-	public void updateProfileFromUser(final User theUser)
+	protected final void updateProfileFromUser(final User theUser)
 	{
 		//if(null == textProfileScreenName) return;	// view has not been created yet.
 		
@@ -69,5 +79,28 @@ public class ProfileFragment extends SherlockFragment
 		// load the image asynchronously
 		ImageLoader.getInstance().displayImage(theUser.getProfileImageUrl(), imageProfile);
 	}
+	
+	protected final void updateProfileFromJson(final JSONObject theJSONObject)
+	{
+		final User theUser = User.fromJson(theJSONObject);
+		final SherlockFragmentActivity theActivity = ProfileFragment.this.getSherlockActivity();
+		final ActionBar theActionBar = theActivity.getSupportActionBar();
+		
+		theActionBar.setTitle("@" + theUser.getScreenName());
+		
+		// update the values in the profile fragment
+		final FragmentManager theFragmentManager = theActivity.getSupportFragmentManager();
+		final ProfileFragment theProfileFragment = 
+				(ProfileFragment)theFragmentManager.findFragmentById(R.id.fragmentProfile);
+		theProfileFragment.updateProfileFromUser(theUser);
+
+	}
+	
+	/**
+	 * Load a User object and set it into the view
+	 */
+	protected abstract void loadProfile();
+
+
 
 }

@@ -2,6 +2,7 @@ package com.lumpofcode.lumpoftweets.tweetsactivity;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +20,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.lumpofcode.lumpoftweets.R;
 import com.lumpofcode.lumpoftweets.models.Tweet;
-import com.lumpofcode.lumpoftweets.profileactivity.ProfileActivity;
+import com.lumpofcode.lumpoftweets.profileactivity.AuthenticatedProfileActivity;
+import com.lumpofcode.lumpoftweets.profileactivity.UserProfileActivity;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog;
 import com.lumpofcode.lumpoftweets.tweetdetail.TweetDetailDialog.TweetDetailDialogListener;
 import com.lumpofcode.lumpoftweets.tweetlist.HomeTimelineFragment;
@@ -32,9 +34,7 @@ public class TweetsActivity
 {
 	private static final Integer HOME_TAB = R.string.action_home;
 	private static final Integer MENTIONS_TAB = R.string.action_mentions;
-	
-	private ActionBar _actionBar;
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -69,10 +69,7 @@ public class TweetsActivity
 				.setTabListener(this);
 		theActionBar.addTab(theMentionsTab);
 		
-		theActionBar.selectTab(theMentionsTab);
-		
-		_actionBar = theActionBar;
-		
+		theActionBar.selectTab(theHomeTab);
 	}
 
 	@Override
@@ -98,7 +95,7 @@ public class TweetsActivity
 	
 	public void onProfileAction(MenuItem item)
 	{
-		Intent i = new Intent(this, ProfileActivity.class);
+		Intent i = new Intent(this, AuthenticatedProfileActivity.class);
 		startActivity(i);
 	}
 
@@ -141,8 +138,10 @@ public class TweetsActivity
 			@Override
 			public void onSuccess(JSONObject theJSONObject)
 			{
+				final ActionBar theActionBar = TweetsActivity.this.getSupportActionBar();
+				
 				// only do this if the home timeline tab is showing
-				if(HOME_TAB.equals(_actionBar.getSelectedTab().getTag()))
+				if(HOME_TAB.equals(theActionBar.getSelectedTab().getTag()))
 				{
 					// insert the tweet into the array, this will update the tweet list
 					final Tweet theTweet = Tweet.fromJson(theJSONObject);

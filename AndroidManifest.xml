@@ -48,9 +48,13 @@
             android:label="@string/title_activity_home_timeline" >
         </activity>
         <activity
-            android:name="com.lumpofcode.lumpoftweets.profileactivity.ProfileActivity"
+            android:name="com.lumpofcode.lumpoftweets.profileactivity.AuthenticatedProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
-    </application>
+        <activity
+            android:name="com.lumpofcode.lumpoftweets.profileactivity.UserProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        </application>
 
 </manifest>

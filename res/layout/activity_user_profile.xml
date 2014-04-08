@@ -8,9 +8,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AuthenticatedProfileActivity" >
 
-    <fragment	
+    <fragment
         android:id="@+id/fragmentProfile"
-        android:name="com.lumpofcode.lumpoftweets.profilefragment.AuthenticatedProfileFragment"
+        android:name="com.lumpofcode.lumpoftweets.profilefragment.UserProfileFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/fragmentUserTimeline"
-        android:name="com.lumpofcode.lumpoftweets.tweetlist.AuthenticatedTimelineFragment"
+        android:name="com.lumpofcode.lumpoftweets.tweetlist.UserTimelineFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

@@ -1,12 +1,15 @@
 package com.lumpofcode.lumpoftweets.tweetlist;
 
 import com.lumpofcode.lumpoftweets.models.Tweet;
+import com.lumpofcode.lumpoftweets.tweetlist.TweetListFragment.TweetTimelineResponseHandler;
 import com.lumpofcode.lumpoftweets.twitter.TweetsAdapter;
 import com.lumpofcode.lumpoftweets.twitter.TwitterClient;
 import com.lumpofcode.lumpoftweets.twitter.TwitterClientApp;
+import com.lumpofcode.lumpoftweets.twitter.TwitterClient.TweetPage;
 
-public class UserTimelineFragment extends TweetListFragment
+public class AuthenticatedTimelineFragment extends TweetListFragment
 {
+
 	/**
 	 * Call the twitter service and return a list of tweets starting at theStartingTweet
 	 * @param thePage
@@ -22,7 +25,7 @@ public class UserTimelineFragment extends TweetListFragment
 		//
 		TwitterClientApp.getRestClient().getUserTimeline(
 				new TweetTimelineResponseHandler(), 
-				getActivity().getIntent().getExtras().getString(TweetsAdapter.SCREEN_NAME_ARG),
+				null,
 				TWEET_PAGE_SIZE, 
 				thePage, 
 				theStartingTweet);

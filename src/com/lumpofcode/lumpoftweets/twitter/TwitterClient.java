@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.lumpofcode.lumpoftweets.models.Tweet;
 
@@ -33,6 +34,7 @@ public final class TwitterClient extends OAuthBaseClient {
     public static final String COUNT_PARAMETER = "?count=";
     public static final String SINCE_PARAMETER = "&since_id=";
     public static final String MAX_ID_PARAMETER = "&max_id=";
+    public static final String SCREEN_NAME_PARAMETER = "&screen_name=";
     
     public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
@@ -52,14 +54,25 @@ public final class TwitterClient extends OAuthBaseClient {
      */
     
     /**
-     * Get the user's profile data via the twitter verify credentials end point
+     * Get the authenticated user's profile data via the twitter verify credentials end point
      * @param handler the AsyncHttpResponseHandler called when the service returns with data
      */
-    public void getProfile(final AsyncHttpResponseHandler handler)
+    public void getAuthenticatedProfile(final JsonHttpResponseHandler handler)
     {
 		client.get(getVerifyCredentialsUrl(), null, handler);
     }
     
+    /**
+     * Get a given user's profile data via the twitter lookup/user end point.
+     * 
+     * @param handler the AsyncHttpResponseHandler called when the service returns with data
+     * @param theUserId the id of the user to lookup
+     */
+    public void getUserProfile(final JsonHttpResponseHandler handler, String theScreenName)
+    {
+    	client.get(getLookupUserUrl(theScreenName), null, handler);
+    }
+        
 
     /**
      * Get a page of tweets more recent tweets since a given tweet.
@@ -68,7 +81,7 @@ public final class TwitterClient extends OAuthBaseClient {
      * @param theTweetId tweet id that bounds the request
      */
     public void getHomeTimeline(
-    		final AsyncHttpResponseHandler handler, 
+    		final JsonHttpResponseHandler handler, 
     		final int thePageSize, 
     		final TweetPage thePageOp, 
     		final Tweet theTweet)
@@ -85,7 +98,7 @@ public final class TwitterClient extends OAuthBaseClient {
      * @param theTweetId tweet id that bounds the request
      */
     public void getMentionsIimeline(
-    		final AsyncHttpResponseHandler handler, 
+    		final JsonHttpResponseHandler handler, 
     		final int thePageSize, 
     		final TweetPage thePageOp, 
     		final Tweet theTweet)
@@ -102,13 +115,14 @@ public final class TwitterClient extends OAuthBaseClient {
      * @param theTweetId tweet id that bounds the request
      */
     public void getUserTimeline(
-    		final AsyncHttpResponseHandler handler, 
+    		final JsonHttpResponseHandler handler, 
+    		final String theScreenName,
     		final int thePageSize, 
     		final TweetPage thePageOp, 
     		final Tweet theTweet)
     {
 		client.get(
-				getUserTimelineUrl(thePageSize) + thePageOp.queryParameter(theTweet)
+				getUserTimelineUrl(theScreenName, thePageSize) + thePageOp.queryParameter(theTweet)
 				, null, handler);
     }
     
@@ -149,16 +163,33 @@ public final class TwitterClient extends OAuthBaseClient {
     		+ Integer.toString(thePageSize);
     }
     
-    private final String getUserTimelineUrl(final int thePageSize)
+    private final String getUserTimelineUrl(final String theScreenName, final int thePageSize)
     {
+    	if((null != theScreenName) && !theScreenName.isEmpty())
+    	{
+    		// timeline for given screen name
+	    	return getApiUrl("statuses/user_timeline.json")
+	    		+ COUNT_PARAMETER
+	    		+ Integer.toString(thePageSize)
+	    		+ SCREEN_NAME_PARAMETER
+	    		+ theScreenName;
+    	}
+    	
+    	// default to authenticated user
     	return getApiUrl("statuses/user_timeline.json")
-    		+ COUNT_PARAMETER
-    		+ Integer.toString(thePageSize);
+	    		+ COUNT_PARAMETER
+	    		+ Integer.toString(thePageSize);
     }
     
     private final String getVerifyCredentialsUrl()
     {
     	return getApiUrl("account/verify_credentials.json");
+    }
+    
+    private final String getLookupUserUrl(final String theScreenName)
+    {
+    	return getApiUrl("users/lookup.json") 
+    			+ "?screen_name=" + Uri.encode(theScreenName);
     }
     
     /**
